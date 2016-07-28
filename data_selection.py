@@ -2,15 +2,18 @@
 May download necessary datasets:
 - GloVe word vectors
 - SST (Stanford Sentiment TreeBank Dataset)
+
+author: Jiho Noh (jiho@cs.uky.edu)
 """
 
 from __future__ import print_function
 
-import os, sys
-import urllib2
 import errno
-import zipfile
+import os
 import shutil
+import sys
+import urllib2
+import zipfile
 
 base_dir = 'data/'
 sst_url = 'http://nlp.stanford.edu/~socherr/stanfordSentimentTreebank.zip'
@@ -19,7 +22,7 @@ glove_url = 'http://www-nlp.stanford.edu/data/glove.840B.300d.zip'
 
 def download(url, dirpath):
     filename = url.split('/')[-1]
-    filepath = os.path.join(base_dir, filename)
+    filepath = os.path.join(dirpath, filename)
 
     try:
         u = urllib2.urlopen(url)
@@ -82,9 +85,11 @@ def unzip(filepath):
 
 def get_glove():
     glove_path = os.path.join(base_dir, 'glove')
-    if os.path.exists((glove_path)):
+    if os.path.exists(glove_path):
         return
-    unzip(download(glove_url, base_dir))
+    else:
+        os.mkdir(glove_path)
+    unzip(download(glove_url, glove_path))
 
 
 def get_sst():
